@@ -1,7 +1,7 @@
 ## Ci/Cd pipeline by Jenkins Dynamic nodes on docker
 ### Prerequisites
-* Docker image for jenkins dynamic cluster with packages and credentials for managing kubernetes cluster will be required.
-* Configure dynamic cluter on jenkins  
+*Docker image for jenkins dynamic cluster with packages and credentials for managing kubernetes cluster will be required.
+*Configure dynamic cluter on jenkins  
 
 * Example of Dockerfile for slave Jenkins image: 
 ~~~
@@ -31,7 +31,7 @@ Manage Jenkins -> Manage Nodes and Clouds -> Configuring Clouds -> Add a new clo
 ![image](https://user-images.githubusercontent.com/53195216/105555313-2e2a7780-5d1a-11eb-998f-da63ac035992.png)
 ---
 ![image](https://user-images.githubusercontent.com/53195216/105555360-469a9200-5d1a-11eb-9a95-a54009c0ea4e.png)
-Edit docket configuration file so it can be managed throw 4243 port:
+Edit docket configuration file so it can be managed throw 4243 port:  
 cat /usr/lib/systemd/system/docker.service
 ~~~
 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock  -H tcp://0.0.0.0:4243
