@@ -1,6 +1,9 @@
 ## Ci/Cd pipeline by Jenkins Dynamic nodes on docker
-* Docker image for dynamic jenkins with packages and credentials for managing kubernetes cluster will be required.   
-Dockerfile example for this image: 
+### Prerequisites
+* Docker image for jenkins dynamic cluster with packages and credentials for managing kubernetes cluster will be required.
+* Configure dynamic cluter on jenkins  
+
+* Example of Dockerfile for slave Jenkins image: 
 ~~~
 FROM centos
 
@@ -21,6 +24,18 @@ RUN ssh-keygen -A
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"] && /bin/bash
 ~~~
+* Configuring dynamic Cluster on jenkins:
+Manage Jenkins -> Manage Nodes and Clouds -> Configuring Clouds -> Add a new cloud:
+![image](https://user-images.githubusercontent.com/53195216/105555230-01766000-5d1a-11eb-8b21-7226f85356dc.png)
+---
+![image](https://user-images.githubusercontent.com/53195216/105555313-2e2a7780-5d1a-11eb-998f-da63ac035992.png)
+---
+![image](https://user-images.githubusercontent.com/53195216/105555360-469a9200-5d1a-11eb-9a95-a54009c0ea4e.png)
+Edit docket configuration file so it can be managed throw 4243 port:
+cat /usr/lib/systemd/system/docker.service
+~~~
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock  -H tcp://0.0.0.0:4243
+~~~
 
 ## Job1
 * pull code from git, build docker image, push to registry
@@ -32,7 +47,6 @@ sudo docker push quay.io/rasulkarimov/web:v1
 ~~~
 
 ## Job2
-* Start dynamic Jenkins using prepared image. Set dynamic cluster: Manage Jenkins -> Manage Nodes and Clouds -> Configuring Clouds -> Add a new cloud -> fill required data for setting up dynamic jenkins 
 * Start webserver by slave Jenkins using code downloaded from git
 ~~~
 if kubectl get deployments|grep webdeploy
