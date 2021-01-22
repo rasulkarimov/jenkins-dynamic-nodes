@@ -1,6 +1,6 @@
 ## Ci/Cd pipeline by Jenkins Dynamic nodes on docker
 ### Prerequisites
-*Docker image for jenkins dynamic cluster with packages and credentials for managing kubernetes cluster will be required.
+*Docker image for jenkins dynamic cluster with packages and credentials for managing kubernetes cluster will be required.  
 *Configure dynamic cluter on jenkins  
 
 * Example of Dockerfile for slave Jenkins image: 
