@@ -47,7 +47,7 @@ sudo docker push quay.io/rasulkarimov/web:v1
 ~~~
 
 ## Job2
-* Start webserver by slave Jenkins using code downloaded from git. During building Job set Cluster1 label, for deploying webserver by slave Jenkins.
+* Start webserver by slave Jenkins using code downloaded from git. For Job set label Cluster1, for deploying webserver by dynamic slave Jenkins.
 ~~~
 if kubectl get deployments|grep webdeploy
 then
