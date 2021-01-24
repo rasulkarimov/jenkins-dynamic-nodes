@@ -37,7 +37,7 @@ ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 ~~~
 
 ## Job1
-* job1 - pull code from git, build docker image, push to registry
+* job1 - pull code from git, build docker image, push to dockerhub
 ~~~
 sudo rm -rf /root/DevOpsAL/*
 sudo cp -rvf * /root/DevOpsAL/
