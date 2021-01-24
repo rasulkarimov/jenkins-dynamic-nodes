@@ -1,9 +1,6 @@
 ## Ci/Cd pipeline by Jenkins Dynamic nodes on docker
-### Prerequisites
-*Docker image for jenkins dynamic cluster with packages and credentials for managing kubernetes cluster will be required.  
-*Configure dynamic cluter on jenkins  
 
-* Example of Dockerfile for slave Jenkins image: 
+* Dockerfile for slave Jenkins, certs and configs from kubernetes cluster are required: 
 ~~~
 FROM centos
 
@@ -24,6 +21,7 @@ RUN ssh-keygen -A
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"] && /bin/bash
 ~~~
+
 * Configuring dynamic Cluster on jenkins:
 Manage Jenkins -> Manage Nodes and Clouds -> Configuring Clouds -> Add a new cloud:
 ![image](https://user-images.githubusercontent.com/53195216/105555230-01766000-5d1a-11eb-8b21-7226f85356dc.png)
@@ -31,14 +29,15 @@ Manage Jenkins -> Manage Nodes and Clouds -> Configuring Clouds -> Add a new clo
 ![image](https://user-images.githubusercontent.com/53195216/105555313-2e2a7780-5d1a-11eb-998f-da63ac035992.png)
 ---
 ![image](https://user-images.githubusercontent.com/53195216/105555360-469a9200-5d1a-11eb-9a95-a54009c0ea4e.png)
-Edit docket configuration file so it can be managed throw 4243 port:  
+
+Edit docket configuration file, so it can be managed throw 4243 port:  
 cat /usr/lib/systemd/system/docker.service
 ~~~
 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock  -H tcp://0.0.0.0:4243
 ~~~
 
 ## Job1
-* pull code from git, build docker image, push to registry
+* job1 - pull code from git, build docker image, push to registry
 ~~~
 sudo rm -rf /root/DevOpsAL/*
 sudo cp -rvf * /root/DevOpsAL/
@@ -47,14 +46,14 @@ sudo docker push quay.io/rasulkarimov/web:v1
 ~~~
 
 ## Job2
-* Start webserver by slave Jenkins using code downloaded from git. For Job set label Cluster1, for deploying webserver by dynamic slave Jenkins.
+* Set "Cluster1" label to job - webserver by slave jenkins will be deployed. 
 ~~~
 if kubectl get deployments|grep webdeploy
 then
-echo "Old version webdeploy found, deleting"
+echo "Old version webdeploy server found, deleting"
 kubectl delete all -l app=webdeploy
 else
-echo "Old version webdeploy not found"
+echo "Old version webdeploy server not found"
 fi
 echo "Creating webdeploy app"
 kubectl create deploy webdeploy --image=quay.io/rasulkarimov/web:v1
